@@ -22,24 +22,36 @@ class UserGroups extends Component
     public $description;
     public $image;
     public $coverImage;
+    public $readyToLoad = false;
+
+    protected $listeners = ['loadGroups'];
+
+    public function loadGroups()
+    {
+        $this->readyToLoad = true ;
+    }
 
     public function __construct()
     {
+
         $this->userGroupService     = new UserGroupService;
         $this->userGroupRepository  = new UserGroupRepository;
     }
 
-    public function mount()
-    {
-        $userGroupRepository    = $this->userGroupRepository->getUserGroups($this->user);
-        $this->groups           = $userGroupRepository['groups'];
-    }
+    // public function mount()
+    // {
+
+    //     $userGroupRepository    = ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user) : [];
+    //     $this->groups           = (!empty($userGroupRepository )) ? $userGroupRepository['groups'] : [];
+    // }
+
     public function render()
     {
-        //dd($this->groups);
-        //$this->groups = $this->userGroupRepository->getUserGroups($this->user);
+        $userGroupRepository    = ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user) : [];
+        $this->groups           = (!empty($userGroupRepository )) ? $userGroupRepository['groups'] : [];
         return view('groupmodule::livewire.group.user-groups');
     }
+
 
     public function rules()
     {
@@ -63,7 +75,7 @@ class UserGroups extends Component
         ->setImage($this->image)
         ->setCoverImage($this->coverImage)
         ->createUserGroup();
-        $this->groups->push($group);
+        $this->groups = $this->groups->push($group);
         $this->emit('modalClose', '.add-group-popup');
         $this->emit('showMessage', ['icon' => 'success', 'text' => "Your Group Created Successfully", 'title' => 'Group Create']);
 

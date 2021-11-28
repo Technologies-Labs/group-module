@@ -15,7 +15,7 @@
                     @csrf
                     <select name="users[]" placeholder="Enter User.." multiple>
                         @foreach ($users as $user)
-                        <option  value="{{$user->name}}">{{$user->name}}</option>
+                        <option  value="{{$user->name}}">{{$user->name}} {{$user->phone}}</option>
                         @endforeach
                     </select>
                     <button type="submit" class="main-btn">Add Member</button>

@@ -29,7 +29,7 @@ class GroupController extends Controller
     {
         $user    = Auth::user();
         $isOwner = $user->id == $group->user_id;
-        $posts   = $this->groupRepository->getGroupPosts($group);
+        //$posts   = $this->groupRepository->getGroupPosts($group);
         $members = $group->members;
         $member = $members->where('name', $user->name)->first();
 
@@ -46,7 +46,7 @@ class GroupController extends Controller
         if(!$isOwner && $member->pivot->state == GroupStateEnum::PENDING){
             return redirect()->back()->with('success', "Pending");
         }
-        return view('groupmodule::website.group', compact('group', 'isOwner', 'posts', 'members'));
+        return view('groupmodule::website.group', compact('group', 'isOwner', 'members'));
     }
 
     public function addMember(Request $request, Group $group)

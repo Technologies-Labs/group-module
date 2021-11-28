@@ -30,7 +30,8 @@ class UserGroupService
                 'group_description'     => $this->description,
                 'group_image'           => $this->image,
                 'group_cover_image'     => $this->coverImage,
-            ]);
+            ]
+        );
 
         // $userGroup->supervisors()->attach($this->user->id , ['is_owner' => 1]);
 
@@ -43,10 +44,10 @@ class UserGroupService
     public function updateGroup(Group $group)
     {
         $group->update([
-                'group_name'            => $this->name,
-                'group_description'     => $this->description,
-                'group_image'           => ($this->image??$group->group_image),
-                'is_public'             => $this->is_public
+            'group_name'            => $this->name,
+            'group_description'     => $this->description,
+            'group_image'           => ($this->image ?? $group->group_image),
+            'is_public'             => $this->is_public
         ]);
 
         return response()->json([
@@ -76,11 +77,9 @@ class UserGroupService
 
     public function setImage($image)
     {
-        if($image)
-        {
-            $this->image = $image->store('groups/'.$this->user->name,'public');
-        } else
-        {
+        if ($image) {
+            $this->image = $image->store('groups/', 'public');
+        } else {
             $this->image = UserEnum::USER_GROUP_DEFAULT_IMAGE;
         }
 
@@ -89,24 +88,21 @@ class UserGroupService
 
     public function setCoverImage($image)
     {
-        if($image)
-        {
-            $this->coverImage = $image->store('groups/'.$this->user->name,'public');
-        } else
-        {
+        if ($image) {
+            $this->coverImage = $image->store('groups/' . $this->user->name, 'public');
+        } else {
             $this->coverImage = UserEnum::USER_GROUP_DEFAULT_IMAGE;
         }
 
         return $this;
     }
 
-    public function updateImage($image , $old) {
-        if($image)
-        {
-            $this->image = $image->store('groups/'.$this->user->name,'public');
-            if($old != UserEnum::USER_GROUP_DEFAULT_IMAGE)
-            {
-                File::delete('assets/images/user_groups'. $old);
+    public function updateImage($image, $old)
+    {
+        if ($image) {
+            $this->image = $image->store('groups/' . $this->user->name, 'public');
+            if ($old != UserEnum::USER_GROUP_DEFAULT_IMAGE) {
+                File::delete('assets/images/user_groups' . $old);
             }
         }
         return $this;
@@ -117,6 +113,4 @@ class UserGroupService
         $this->is_public = $isPublic;
         return $this;
     }
-
-
 }

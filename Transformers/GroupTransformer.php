@@ -29,8 +29,9 @@ class GroupTransformer
 
     public function groupPostsTransformer(Group $group)
     {
+        //->orderBy('id','DESC')
         return [
-            'posts'        =>  $group->posts(),
+            'posts'        =>  $group->posts()->orderBy('id','DESC')->paginate(2),
         ];
     }
 

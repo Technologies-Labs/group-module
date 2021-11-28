@@ -32,6 +32,11 @@ class Group extends Model
     //     return $this->belongsToMany(User::class , 'group_members')->wherePivot('invite_status' , 0);
     // }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class , 'user_id','id');
+    }
+
     public function members() {
         return $this->belongsToMany(User::class , 'group_members')->withPivot('id','state');
     }

@@ -1,4 +1,4 @@
-<div class="tab-pane fade " id="groups" wire:ignore.self>
+<div class="tab-pane fade "  id="groups" wire:ignore.self>
     @include('groupmodule::website.components.create_group')
 
     <div class="main-wraper">
@@ -24,8 +24,6 @@
                         (Owner)
                         @endif
 
-
-
                     </a>
                     {{-- <span>{{$group->members->count()}} Members</span> --}}
                 </div>
@@ -35,7 +33,9 @@
             @endforelse
 
         </div>
+        @include('components.loading')
     </div>
+
     @include('groupmodule::website.modals.create_group_model')
 
 </div>

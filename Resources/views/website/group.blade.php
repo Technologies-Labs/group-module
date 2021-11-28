@@ -28,7 +28,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="tab-content">
-                                            <livewire:groupmodule::group.group-posts />
+                                            <livewire:groupmodule::group.group-posts :group="$group" :isOwner="$isOwner"/>
                                             <livewire:groupmodule::group.group-members :group="$group" :state="Modules\GroupModule\Enum\GroupStateEnum::APPROVED" />
                                             <livewire:groupmodule::group.group-members :group="$group" :state="Modules\GroupModule\Enum\GroupStateEnum::PENDING" />
                                         </div>

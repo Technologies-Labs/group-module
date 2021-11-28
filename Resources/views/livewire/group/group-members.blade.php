@@ -6,7 +6,7 @@
             @foreach ($users as $member)
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="friendz">
-                    <figure><img src="{{ asset('') }}{{$member->image}}" alt="">
+                    <figure><img src="{{ asset('storage') }}/{{$member->image}}" alt="">
                     </figure>
                     <span><a href="#" title="">{{$member->name}}</a></span>
                     {{-- <ins>Bz University, Pakistan</ins> --}}
