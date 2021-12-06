@@ -16,7 +16,8 @@ class UserGroups extends Component
 
     private $userGroupService;
     private $userGroupRepository;
-    public $groups;
+
+    //public $groups;
 
     public $name;
     public $description;
@@ -25,6 +26,11 @@ class UserGroups extends Component
     public $readyToLoad = false;
 
     protected $listeners = ['loadGroups'];
+
+    public function getGroupsProperty()
+    {
+        return ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user)->getData() : [];
+    }
 
     public function loadGroups()
     {
@@ -40,16 +46,15 @@ class UserGroups extends Component
 
     // public function mount()
     // {
-
-    //     $userGroupRepository    = ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user) : [];
-    //     $this->groups           = (!empty($userGroupRepository )) ? $userGroupRepository['groups'] : [];
+    //     $this->groups  = ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user)->getData() : [];
     // }
 
     public function render()
     {
-        $userGroupRepository    = ($this->readyToLoad) ? $this->userGroupRepository->getUserGroups($this->user) : [];
-        $this->groups           = (!empty($userGroupRepository )) ? $userGroupRepository['groups'] : [];
-        return view('groupmodule::livewire.group.user-groups');
+
+        return view('groupmodule::livewire.group.user-groups',[
+            'groups' => $this->groups
+        ]);
     }
 
 
@@ -63,11 +68,9 @@ class UserGroups extends Component
         ];
     }
 
-
-
     public function createGroup()
     {
-
+        $this->validate($this->rules());
         $group = $this->userGroupService
         ->setUser($this->user)
         ->setName($this->name)

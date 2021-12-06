@@ -1,3 +1,6 @@
+@php
+    use Modules\GroupModule\Enum\GroupImagesEnum;
+@endphp
 <div class="tab-pane fade "  id="groups" wire:ignore.self>
     @include('groupmodule::website.components.create_group')
 
@@ -17,7 +20,7 @@
             @forelse ($groups as $group)
             <div class="col-lg-3 col-md-4 col-sm-4">
                 <div class="group-box">
-                    <figure><img alt="" src="{{ asset('storage/'.$group->group_image)}}">
+                    <figure><img alt="" src="{{ asset('storage/'.GroupImagesEnum::IMAGE.$group->group_image)}}">
                     </figure>
                     <a title="" href="{{ route('group.details', ['group' => $group]) }}">{{$group->group_name}}
                          @if ($group->is_owner)

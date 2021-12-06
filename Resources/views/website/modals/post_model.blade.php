@@ -17,7 +17,7 @@
                 </h5>
             </div>
             <div class="post-new">
-                <form enctype="multipart/form-data" class="c-form">
+                <form  class="c-form" enctype="multipart/form-data">
                     <input type="text" wire:model.defer="title" required="required" placeholder="Enter Title">
                     @error('title') <span class="error">{{ $message }}</span> @enderror
 

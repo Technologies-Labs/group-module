@@ -14,6 +14,7 @@ use Modules\GroupModule\Services\UserGroupService;
 class GroupPosts extends Component
 {
     use WithFileUploads, WithPagination, ModalHelper;
+
     private $groupRepository;
     private $groupService;
 
@@ -47,6 +48,13 @@ class GroupPosts extends Component
         'postsRefresh' => '$refresh',
     ];
 
+    public function __construct()
+    {
+        $this->setPostCreateModal();
+        $this->groupRepository      = new UserGroupRepository();
+        $this->groupService         = new UserGroupService();
+    }
+
     public function setPostCreateModal()
     {
         $this->modal = [
@@ -67,17 +75,8 @@ class GroupPosts extends Component
 
     public function booted()
     {
-
         $this->user     = $this->group->user;
     }
-
-    public function __construct()
-    {
-        $this->setPostCreateModal();
-        $this->groupRepository      = new UserGroupRepository();
-        $this->groupService         = new UserGroupService();
-    }
-
 
     public function render()
     {
@@ -133,7 +132,7 @@ class GroupPosts extends Component
         // $this->posts = $this->posts = $this->posts->filter(function ($item) use ($post) {
         //     return $item->id != $post->id;
         // });
-        $this->emit('deleteItem',"#group-post-".$post->id);
+        $this->emit('deleteItem', "#group-post-" . $post->id);
         // $this->setPostCreateModal();
         $this->modalClose('.add-post-popup', 'success', "Your Post Deleted Successfully", "Post Deleted");
     }

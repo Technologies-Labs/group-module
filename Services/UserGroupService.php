@@ -3,14 +3,16 @@
 namespace Modules\GroupModule\Services;
 
 use App\Models\User;
+use App\Traits\ImageHelperTrait;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\File;
 use Modules\GroupModule\Entities\Group;
+use Modules\GroupModule\Enum\GroupImagesEnum;
 use Modules\UserModule\Enum\UserEnum;
 
 class UserGroupService
 {
-    use WithFileUploads;
+    use WithFileUploads , ImageHelperTrait;
 
     public $user;
     public $name;
@@ -19,6 +21,8 @@ class UserGroupService
     public $image;
     public $is_public;
     public $coverImage;
+
+    private $path = '';
 
     public function createUserGroup()
     {
@@ -77,8 +81,10 @@ class UserGroupService
 
     public function setImage($image)
     {
+        //$image->store('groups/', 'public');
+
         if ($image) {
-            $this->image = $image->store('groups/', 'public');
+            $this->image = $this->uploadImageWithIntervention($image , 115 ,115,GroupImagesEnum::IMAGE)['name'];
         } else {
             $this->image = UserEnum::USER_GROUP_DEFAULT_IMAGE;
         }
@@ -88,8 +94,9 @@ class UserGroupService
 
     public function setCoverImage($image)
     {
+        //$image->store('groups/' . $this->user->name, 'public');
         if ($image) {
-            $this->coverImage = $image->store('groups/' . $this->user->name, 'public');
+            $this->coverImage =$this->uploadImageWithIntervention($image,1202,425,GroupImagesEnum::COVER_IMAGE)['name'] ;
         } else {
             $this->coverImage = UserEnum::USER_GROUP_DEFAULT_IMAGE;
         }

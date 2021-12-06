@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\GroupModule\Enum\GroupStateEnum;
+use Modules\GroupModule\Scopes\GroupScope;
 
 class Group extends Model
 {
@@ -16,6 +17,10 @@ class Group extends Model
     public function getRouteKeyName()
     {
         return 'name';
+    }
+    protected static function booted()
+    {
+        static::addGlobalScope(new GroupScope);
     }
 
     // public function supervisors()

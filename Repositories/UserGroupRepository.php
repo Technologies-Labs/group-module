@@ -5,15 +5,23 @@ namespace Modules\GroupModule\Repositories;
 
 
 use App\Models\User;
+use League\Fractal\Resource\Collection;
 use Modules\GroupModule\Entities\Group;
 use Modules\GroupModule\Enum\GroupStateEnum;
 use Modules\GroupModule\Transformers\GroupTransformer;
+use Modules\GroupModule\Transformers\UserGroupsTransformer;
+
 
 class UserGroupRepository
 {
     public function getUserGroups(User $user)
     {
-        return (new GroupTransformer())->userGroupsTransformer($user);
+       $groups = $user->ownerGroups->each(function ($item){
+            $item->setAttribute('is_owner', true);
+        })->merge($user->groups);
+        return new Collection($groups, new UserGroupsTransformer);
+
+        //return (new GroupTransformer())->userGroupsTransformer($user);
     }
 
     public function getGroupMembers(Group $group, $state)
