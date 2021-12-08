@@ -5,6 +5,7 @@ namespace Modules\GroupModule\Http\Livewire\Group;
 use App\Models\User;
 use Livewire\Component;
 use Modules\GroupModule\Entities\Group;
+use Modules\GroupModule\Enum\GroupImagesEnum;
 use Modules\GroupModule\Repositories\UserGroupRepository;
 
 class GroupDetails extends Component
@@ -22,6 +23,7 @@ class GroupDetails extends Component
     }
     public function render()
     {
+
         return view('groupmodule::livewire.group.group-details');
     }
 }

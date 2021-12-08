@@ -2,21 +2,24 @@
 
 namespace Modules\GroupModule\Http\Livewire\Group;
 
+use App\Traits\ImageHelperTrait;
 use App\Traits\ModalHelper;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Modules\GroupModule\Entities\Group;
 use Modules\GroupModule\Entities\Post;
+use Modules\GroupModule\Enum\GroupImagesEnum;
 use Modules\GroupModule\Repositories\UserGroupRepository;
 use Modules\GroupModule\Services\UserGroupService;
 
+
 class GroupPosts extends Component
 {
-    use WithFileUploads, WithPagination, ModalHelper;
+
+    use WithFileUploads, ModalHelper , ImageHelperTrait;
 
     private $groupRepository;
-    private $groupService;
 
     public $isOwner;
     public Group $group;
@@ -31,28 +34,36 @@ class GroupPosts extends Component
     public $modal;
     public $updateModel = false;
 
-    public function getPostsProperty()
+    public  $perPage = 5;
+    public  $page;
+
+    public function loadMore()
     {
-        $posts =  $this->groupRepository->getGroupPosts($this->group);
-        return $posts['posts'];
+        $this->perPage += 5;
     }
 
-    protected $paginationTheme = 'bootstrap';
+    public function getPostsProperty()
+    {
+        return $this->groupRepository
+        ->getGroupPosts($this->group , $this->perPage , $this->page)
+        ->getData();
+    }
 
     protected $rules = [
         'title' => 'required',
         'content' => 'required',
         'image' => 'required| image',
     ];
-    protected $listeners = [
-        'postsRefresh' => '$refresh',
-    ];
 
-    public function __construct()
+    public function boot()
     {
         $this->setPostCreateModal();
         $this->groupRepository      = new UserGroupRepository();
-        $this->groupService         = new UserGroupService();
+    }
+
+    public function booted()
+    {
+        $this->user     = $this->group->user;
     }
 
     public function setPostCreateModal()
@@ -73,29 +84,25 @@ class GroupPosts extends Component
         ];
     }
 
-    public function booted()
-    {
-        $this->user     = $this->group->user;
-    }
-
     public function render()
     {
         return view('groupmodule::livewire.group.group-posts', [
-            'posts' => $this->posts,
+            'posts' =>  $this->posts ,
         ]);
     }
 
     public function createPost()
     {
+
         $this->validate($this->rules);
         $data = [
             'title'     => $this->title,
             'content'   => $this->content,
-            'image'     => $this->image->store('groups/posts', 'public'),
+            'image'     => $this->uploadImageWithIntervention($this->image ,  549, 329, GroupImagesEnum::POSTS_IMAGE_PATH)['name'],
             'group_id'   => $this->group->id,
         ];
         $post = Post::create($data);
-        $this->emit('postsRefresh');
+        //$this->emit('postsRefresh');
         $this->modalClose('.add-post-popup', 'success', 'Your Post Created Successfully', 'Post Create');
     }
 
@@ -108,6 +115,7 @@ class GroupPosts extends Component
         $this->content      = $post->content;
         // $this->image        = $post->image;
         $this->setPostUpdateModal();
+        $this->emit('showPopup','.add-post-popup');
     }
 
     public function updatePost()
@@ -116,7 +124,7 @@ class GroupPosts extends Component
         $post           = $this->post;
         $post->title    = $this->title;
         $post->content  = $this->content;
-        $post->image    = $this->image ? $this->image->store('groups/posts', 'public') : $post->image;
+        $post->image    = $this->image ? $this->uploadImageWithIntervention($this->image ,  549, 329, GroupImagesEnum::POSTS_IMAGE_PATH)['name'] : $post->image;
         $post->save();
 
         $this->modalClose('.add-post-popup', 'success', 'Your Post Updated Successfully', 'Post Updated');

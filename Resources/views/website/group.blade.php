@@ -28,9 +28,13 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="tab-content">
-                                            <livewire:groupmodule::group.group-posts :group="$group" :isOwner="$isOwner"/>
-                                            <livewire:groupmodule::group.group-members :group="$group" :state="Modules\GroupModule\Enum\GroupStateEnum::APPROVED" />
-                                            <livewire:groupmodule::group.group-members :group="$group" :state="Modules\GroupModule\Enum\GroupStateEnum::PENDING" />
+                                            <livewire:groupmodule::group.group-posts :group="$group"
+                                                :isOwner="$isOwner" />
+                                            <livewire:groupmodule::group.group-members :group="$group"
+                                                :state="Modules\GroupModule\Enum\GroupStateEnum::APPROVED" />
+                                            <livewire:groupmodule::group.group-members :group="$group"
+                                                :state="Modules\GroupModule\Enum\GroupStateEnum::PENDING" />
+                                            <livewire:groupmodule::group.group-setting :group="$group" />
                                         </div>
                                     </div>
                                 </div>
@@ -47,17 +51,19 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="share-article mt-5">
+                                                    @php
+                                                    $facebook =
+                                                    Share::page(url()->current())->facebook()->getRawLinks();
+                                                    $whatsapp =
+                                                    Share::page(url()->current())->whatsapp()->getRawLinks();
+
+                                                    @endphp
                                                     <span>share this Group</span>
-                                                    <a href="#" title="" class="facebook"><i
+                                                    <a href="{{$facebook}}" target="_blank" title="" class="facebook"><i
                                                             class="icofont-facebook"></i></a>
-                                                    <a href="#" title="" class="pinterest"><i
-                                                            class="icofont-pinterest"></i></a>
-                                                    <a href="#" title="" class="instagram"><i
-                                                            class="icofont-instagram"></i></a>
-                                                    <a href="#" title="" class="twitter"><i
-                                                            class="icofont-twitter"></i></a>
-                                                    <a href="#" title="" class="google"><i
-                                                            class="icofont-google-plus"></i></a>
+
+                                                    <a href="{{$whatsapp}}" target="_blank" title="" class="whatsapp"><i
+                                                            class="icofont-whatsapp"></i></a>
                                                 </div>
                                             </div>
                                         </div>

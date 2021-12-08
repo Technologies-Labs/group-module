@@ -2,6 +2,7 @@
 
 namespace Modules\GroupModule\Http\Livewire\Group;
 
+use App\Traits\ModalHelper;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Modules\GroupModule\Repositories\UserGroupRepository;
@@ -9,7 +10,7 @@ use Modules\GroupModule\Services\UserGroupService;
 
 class UserGroups extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads , ModalHelper;
 
     public $user;
     public $isCurrantUser;
@@ -79,8 +80,6 @@ class UserGroups extends Component
         ->setCoverImage($this->coverImage)
         ->createUserGroup();
         $this->groups = $this->groups->push($group);
-        $this->emit('modalClose', '.add-group-popup');
-        $this->emit('showMessage', ['icon' => 'success', 'text' => "Your Group Created Successfully", 'title' => 'Group Create']);
-
+        $this->modalClose('.add-group-popup' , 'success' ,'Your Group Created Successfully' ,'Group Create');
     }
 }

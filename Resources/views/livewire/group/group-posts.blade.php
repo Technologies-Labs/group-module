@@ -1,4 +1,7 @@
 <div class="tab-pane active fade show" id="posts" wire:ignore.self>
+    @php
+        use Modules\GroupModule\Enum\GroupImagesEnum;
+    @endphp
     @include('components.loading')
     @if ($isOwner)
     @include('groupmodule::website.components.create_post')
@@ -16,7 +19,7 @@
                                 d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
                             </path>
                         </svg></em>
-                    <img alt="" src="{{ asset('images/resources/user5.jpg') }}">
+                        <img alt="" src="{{ asset('storage') }}/{{$user->image}}">
                 </figure>
                 <div class="friend-name">
                     @if ($isOwner)
@@ -50,7 +53,7 @@
                 </div>
                 <div class="post-meta">
                     <figure id="main">
-                        <img src="{{ asset('storage') }}/{{$post->image}}" alt="">
+                        <img src="{{ asset('storage') }}/{{GroupImagesEnum::POSTS_IMAGE_PATH}}{{$post->image}}" alt="">
                     </figure>
                     <a href="javascript:void(0);" class="post-title" target="_blank">{{$post->title}}</a>
                     <div>
@@ -117,8 +120,30 @@
     </div>
     @endforeach
 
-    {{$posts->links()}}
-    @include('components.loading')
+    <div
+        x-data="{
+            observe() {
+                let observer = new IntersectionObserver((entries) => {
+                console.log(entries)
+                entries.forEach(entry => {
+                    if (entry.isIntersecting)
+                    {
+                        @this.call('loadMore')
+                    }
+                   })
+                },{
+                   root: null
+                })
+                    observer.observe(this.$el)
+            }
+        }"
+        x-init="observe">
+
+    </div>
+
+    @if($posts && $posts->hasMorePages())
+        @include('components.loading')
+    @endif
 
     @include('groupmodule::website.modals.post_model')
 </div>

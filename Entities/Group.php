@@ -3,6 +3,7 @@
 namespace Modules\GroupModule\Entities;
 
 use App\Models\User;
+use App\Scopes\OrderingScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\GroupModule\Enum\GroupStateEnum;
@@ -16,11 +17,11 @@ class Group extends Model
 
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'id';
     }
     protected static function booted()
     {
-        static::addGlobalScope(new GroupScope);
+        static::addGlobalScope(new OrderingScope);
     }
 
     // public function supervisors()

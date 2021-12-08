@@ -2,6 +2,7 @@
 
 namespace Modules\GroupModule\Entities;
 
+use App\Scopes\OrderingScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\GroupModule\States\GroupMember\GroupMemberState;
@@ -16,6 +17,11 @@ class GroupMember extends Model
     protected $casts = [
         'state' => GroupMemberState::class,
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrderingScope);
+    }
 
 
 }

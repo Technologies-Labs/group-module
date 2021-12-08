@@ -20,20 +20,20 @@ class GroupTransformer
     //     // ];
     // }
 
-    public function groupMembersTransformer(Group $group , $state)
-    {
-        return [
-            'members'        => $group->members()->wherePivot('state' , $state)->paginate(10),
-        ];
-    }
+    // public function groupMembersTransformer(Group $group , $state)
+    // {
+    //     return [
+    //         'members'        => $group->members()->wherePivot('state' , $state)->paginate(10),
+    //     ];
+    // }
 
-    public function groupPostsTransformer(Group $group)
-    {
-        //->orderBy('id','DESC')
-        return [
-            'posts'        =>  $group->posts()->orderBy('id','DESC')->paginate(2),
-        ];
-    }
+    // public function groupPostsTransformer(Group $group , $paginate = 10)
+    // {
+    //     //->orderBy('id','DESC')
+    //     return [
+    //         'posts'        =>  $group->posts()->orderBy('id','DESC')->paginate($paginate, ['*'], null, $page),
+    //     ];
+    // }
 
 
 }

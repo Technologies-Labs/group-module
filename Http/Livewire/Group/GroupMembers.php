@@ -19,20 +19,35 @@ class GroupMembers extends Component
     public $group;
     public $state;
 
+    public $readyToLoad = false;
     protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['loadApprovedMembers' , 'loadPendingMembers'];
 
-    public function __construct()
+
+    public function getMembersProperty()
+    {
+        return ($this->readyToLoad) ? $this->groupRepository->getGroupMembers($this->group , $this->state , 20)->getData() : [];
+    }
+
+    public function boot()
     {
         $this->groupRepository  = new UserGroupRepository();
     }
 
+    public function loadApprovedMembers()
+    {
+        $this->readyToLoad = true ;
+    }
+
+    public function loadPendingMembers()
+    {
+        $this->readyToLoad = true ;
+    }
+
     public function render()
     {
-
-        $this->membersRepository = $this->groupRepository->getGroupMembers($this->group , $this->state);
-        //dd($this->membersRepository['members']);
         return view('groupmodule::livewire.group.group-members',[
-            'users' => $this->membersRepository['members']
+            'users' => $this->members
         ]);
     }
 

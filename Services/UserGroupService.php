@@ -48,16 +48,14 @@ class UserGroupService
     public function updateGroup(Group $group)
     {
         $group->update([
+            'name'                  => preg_replace('/\s+/', '', ucwords($this->name)),
             'group_name'            => $this->name,
             'group_description'     => $this->description,
-            'group_image'           => ($this->image ?? $group->group_image),
-            'is_public'             => $this->is_public
+            'group_image'           => $this->image,
+            'group_cover_image'     => $this->coverImage,
         ]);
 
-        return response()->json([
-            'success'       => ($group) ? true : false,
-            'message'       => ($group) ? 'Group updated successfully' : 'Group Failed updated',
-        ]);
+
     }
 
     public function setUser(User $user)
@@ -81,8 +79,11 @@ class UserGroupService
 
     public function setImage($image)
     {
-        //$image->store('groups/', 'public');
 
+        if(is_string($image)){
+            $this->image = $image;
+            return $this;
+        }
         if ($image) {
             $this->image = $this->uploadImageWithIntervention($image , 115 ,115,GroupImagesEnum::IMAGE)['name'];
         } else {
@@ -94,7 +95,10 @@ class UserGroupService
 
     public function setCoverImage($image)
     {
-        //$image->store('groups/' . $this->user->name, 'public');
+        if(is_string($image)){
+            $this->coverImage = $image;
+            return $this;
+        }
         if ($image) {
             $this->coverImage =$this->uploadImageWithIntervention($image,1202,425,GroupImagesEnum::COVER_IMAGE)['name'] ;
         } else {

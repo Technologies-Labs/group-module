@@ -6,38 +6,40 @@ namespace Modules\GroupModule\Repositories;
 
 use App\Models\User;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use Modules\GroupModule\Entities\Group;
 use Modules\GroupModule\Enum\GroupStateEnum;
+use Modules\GroupModule\Transformers\GroupMembersTransformer;
+use Modules\GroupModule\Transformers\GroupPostsTransformer;
 use Modules\GroupModule\Transformers\GroupTransformer;
 use Modules\GroupModule\Transformers\UserGroupsTransformer;
 
 
 class UserGroupRepository
 {
+    public function getGroupInformation(Group $group)
+    {
+        return new Item($group, new UserGroupsTransformer);
+    }
+
     public function getUserGroups(User $user)
     {
        $groups = $user->ownerGroups->each(function ($item){
             $item->setAttribute('is_owner', true);
         })->merge($user->groups);
         return new Collection($groups, new UserGroupsTransformer);
-
-        //return (new GroupTransformer())->userGroupsTransformer($user);
     }
 
-    public function getGroupMembers(Group $group, $state)
+    public function getGroupMembers(Group $group, $state , $paginate)
     {
-        return (new GroupTransformer())->groupMembersTransformer($group , $state);
+        $members = $group->members()->wherePivot('state' , $state)->paginate($paginate, ['*'], null);
+        return new Collection($members, new GroupMembersTransformer);
     }
 
-    public function getGroupPosts(Group $group)
+    public function getGroupPosts(Group $group ,$paginate = 10 , $page)
     {
-        return (new GroupTransformer())->groupPostsTransformer($group);
+        $posts = $group->posts()->paginate($paginate, ['*'], null, $page);
+        return new Collection($posts, new GroupPostsTransformer);
     }
 
-
-
-    // public function getAllUserGroup($user_id)
-    // {
-    //     return User::where('id' , $user_id)->with(['supervisorGroups' , 'ownerGroups'])->get();
-    // }
 }
