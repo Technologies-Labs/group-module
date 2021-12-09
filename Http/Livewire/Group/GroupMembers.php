@@ -7,8 +7,10 @@ use Livewire\WithPagination;
 use Modules\GroupModule\Entities\Group;
 use Modules\GroupModule\Entities\GroupMember;
 use Modules\GroupModule\Enum\GroupStateEnum;
+use Modules\GroupModule\Notifications\MemberNotification;
 use Modules\GroupModule\Repositories\UserGroupRepository;
 use Modules\GroupModule\States\GroupMember\GroupMemberApproved;
+use Modules\NotificationModule\Enums\NotificationTemplateKeysEnums;
 
 class GroupMembers extends Component
 {
@@ -58,6 +60,14 @@ class GroupMembers extends Component
             abort(404);
         }
         $member->state->transitionTo(GroupMemberApproved::class);
+
+        $memberNotification = new MemberNotification();
+        $memberNotification
+        ->setTemplate(NotificationTemplateKeysEnums::APPROVED_MEMBER)
+        ->setMember($member->user_id)
+        ->setGroup($this->group)
+        ->handle();
+
         $this->emit('showMessage', ['icon' => 'success', 'text' => "Your User Added Successfully To Group ", 'title' => 'Add Member']);
     }
 
@@ -68,6 +78,12 @@ class GroupMembers extends Component
             abort(404);
         }
         $member->delete();
+        $memberNotification = new MemberNotification();
+        $memberNotification
+        ->setTemplate(NotificationTemplateKeysEnums::DELETE_MEMBER)
+        ->setMember($member->user_id)
+        ->setGroup($this->group)
+        ->handle();
         $this->emit('showMessage', ['icon' => 'success', 'text' => "Your User Cancel Successfully From Group ", 'title' => 'Cancel Member']);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\GroupModule\Http\Livewire\Group;
 
+use App\Actions\Notification\SendNotification;
 use App\Traits\ImageHelperTrait;
 use App\Traits\ModalHelper;
 use Livewire\Component;
@@ -10,9 +11,11 @@ use Livewire\WithPagination;
 use Modules\GroupModule\Entities\Group;
 use Modules\GroupModule\Entities\Post;
 use Modules\GroupModule\Enum\GroupImagesEnum;
+use Modules\GroupModule\Enum\GroupStateEnum;
 use Modules\GroupModule\Repositories\UserGroupRepository;
 use Modules\GroupModule\Services\UserGroupService;
-
+use Modules\NotificationModule\Enums\NotificationTemplateKeysEnums;
+use Modules\GroupModule\Notifications\PostNotification;
 
 class GroupPosts extends Component
 {
@@ -101,7 +104,18 @@ class GroupPosts extends Component
             'image'     => $this->uploadImageWithIntervention($this->image ,  549, 329, GroupImagesEnum::POSTS_IMAGE_PATH)['name'],
             'group_id'   => $this->group->id,
         ];
+
         $post = Post::create($data);
+
+        $postNotification = new PostNotification();
+        $postNotification
+        ->setTemplate(NotificationTemplateKeysEnums::CREATE_POST)
+        ->setUser($this->user)
+        ->setPost($post)
+        ->setGroup($this->group)
+        ->setCreatePostMessage()
+        ->handle();
+
         //$this->emit('postsRefresh');
         $this->modalClose('.add-post-popup', 'success', 'Your Post Created Successfully', 'Post Create');
     }
