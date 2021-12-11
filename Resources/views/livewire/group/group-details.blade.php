@@ -1,11 +1,14 @@
 <div class="col-lg-12">
     @php
-        use Modules\GroupModule\Enum\GroupImagesEnum;
+    use Modules\GroupModule\Enum\GroupImagesEnum;
     @endphp
     <div class="group-avatar">
         <img src="{{ asset('storage') }}/{{GroupImagesEnum::COVER_IMAGE.$group->group_cover_image}}" alt="">
         @if ($isOwner)
-            <a href="#" title="" class="add-member"><i class="icofont-check-circled"></i>Add Member</a>
+        @can('group-member-create')
+        <a href="#" title="" class="add-member"><i class="icofont-check-circled"></i>Add Member</a>
+        @endcan
+
         @endif
 
     </div>
@@ -21,9 +24,20 @@
 
         <ul class="nav nav-tabs about-btn mt-3">
             @if ($isOwner)
+            @can('post-list')
             <li class="nav-item"><a class="active" href="#posts" data-toggle="tab" wire:ignore>Posts</a></li>
-            <li class="nav-item" wire:click="$emit('loadApprovedMembers')"><a class="" href="#members-{{Modules\GroupModule\Enum\GroupStateEnum::APPROVED}}" data-toggle="tab" wire:ignore >Members</a></li>
-            <li class="nav-item" wire:click="$emit('loadPendingMembers')"><a class="" href="#members-{{Modules\GroupModule\Enum\GroupStateEnum::PENDING}}" data-toggle="tab" wire:ignore >Group Join</a></li>
+            @endcan
+
+            @can('group-member-list')
+            <li class="nav-item" wire:click="$emit('loadApprovedMembers')"><a class=""
+                    href="#members-{{Modules\GroupModule\Enum\GroupStateEnum::APPROVED}}" data-toggle="tab"
+                    wire:ignore>Members</a></li>
+            <li class="nav-item" wire:click="$emit('loadPendingMembers')"><a class=""
+                    href="#members-{{Modules\GroupModule\Enum\GroupStateEnum::PENDING}}" data-toggle="tab"
+                    wire:ignore>Group Join</a></li>
+            @endcan
+
+
             <li class="nav-item"><a class="" href="#setting" data-toggle="tab" wire:ignore>Settings</a></li>
             @endif
         </ul>
@@ -38,5 +52,8 @@
             </li>
         </ul>
     </div>
+    @can('group-member-create')
     @include('groupmodule::website.modals.add_member_model')
+    @endcan
+
 </div>

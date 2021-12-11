@@ -10,15 +10,21 @@
                     <figure><img src="{{ asset('storage') }}/{{$member->image}}" alt="">
                     </figure>
                     <span><a href="#" title="">{{$member->name}}</a></span>
-
+                    @can('group-member-approve')
                     @if ($state == Modules\GroupModule\Enum\GroupStateEnum::PENDING)
                     <a href="javascript:void(0)" wire:click="approvedMember({{$member->pivot->id}})" title=""
                         data-ripple=""><i class="icofont-star"></i>Approve</a>
                     @endif
+                    @endcan
+
+                    @can('group-member-delete')
                     @if ($state == Modules\GroupModule\Enum\GroupStateEnum::APPROVED)
                     <a href="javascript:void(0)" wire:click="deleteMember({{$member->pivot->id}})" title=""
-                        data-ripple=""><i class="icofont-star"></i>Cancel</a>
+                        data-ripple=""><i class="icofont-star"></i>Delete</a>
                     @endif
+                    @endcan
+
+
 
                 </div>
             </div>

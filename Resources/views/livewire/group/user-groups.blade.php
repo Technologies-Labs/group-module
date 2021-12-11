@@ -1,8 +1,11 @@
-@php
+<div class="tab-pane fade " id="groups" wire:ignore.self>
+    @php
     use Modules\GroupModule\Enum\GroupImagesEnum;
-@endphp
-<div class="tab-pane fade "  id="groups" wire:ignore.self>
+    @endphp
+    @can('group-create')
     @include('groupmodule::website.components.create_group')
+    @endcan
+
 
     <div class="main-wraper">
         <h4 class="main-title"><i class=""><svg class="feather feather-users" stroke-linejoin="round"
@@ -15,15 +18,15 @@
                 </svg></i>
             Groups
         </h4>
+        @can('group-list')
         <div class="row col-xs-6">
-
             @forelse ($groups as $group)
             <div class="col-lg-3 col-md-4 col-sm-4">
                 <div class="group-box">
                     <figure><img alt="" src="{{ asset('storage/'.GroupImagesEnum::IMAGE.$group->group_image)}}">
                     </figure>
                     <a title="" href="{{ route('group.details', ['group' => $group]) }}">{{$group->group_name}}
-                         @if ($group->is_owner)
+                        @if ($group->is_owner)
                         (Owner)
                         @endif
 
@@ -34,11 +37,15 @@
             @empty
 
             @endforelse
-
         </div>
         @include('components.loading')
+        @endcan
     </div>
 
+
+    @can('group-create')
     @include('groupmodule::website.modals.create_group_model')
+    @endcan
+
 
 </div>
