@@ -5,6 +5,6 @@ use \Spatie\Enum\Enum;
 
 class GroupStateEnum
 {
-    const PENDING = "Pending";
-    const APPROVED = "Approved";
+    const PENDING   = "Pending";
+    const APPROVED  = "Approved";
 }

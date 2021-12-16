@@ -3,6 +3,7 @@
 namespace Modules\GroupModule\Entities;
 
 use App\Scopes\OrderingScope;
+use Database\Factories\GroupMembersFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\GroupModule\States\GroupMember\GroupMemberState;
@@ -10,7 +11,7 @@ use Spatie\ModelStates\HasStates;
 
 class GroupMember extends Model
 {
-    use HasFactory , HasStates;
+    use HasFactory , HasStates ,  HasFactory;
 
     protected $fillable = ['group_id' , 'user_id' , 'state'];
 
@@ -22,6 +23,11 @@ class GroupMember extends Model
     {
         static::addGlobalScope(new OrderingScope);
     }
+    protected static function newFactory()
+    {
+        return GroupMembersFactory::new();
+    }
+
 
 
 }

@@ -37,12 +37,12 @@ class GroupPosts extends Component
     public $modal;
     public $updateModel = false;
 
-    public  $perPage = 5;
+    public  $perPage = 10;
     public  $page;
 
     public function loadMore()
     {
-        $this->perPage += 5;
+        $this->perPage += 10;
     }
 
     public function getPostsProperty()

@@ -4,6 +4,8 @@ namespace Modules\GroupModule\Entities;
 
 use App\Models\User;
 use App\Scopes\OrderingScope;
+use Database\Factories\GroupsFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\GroupModule\Enum\GroupStateEnum;
@@ -11,7 +13,7 @@ use Modules\GroupModule\Scopes\GroupScope;
 
 class Group extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes , HasFactory;
 
     protected $guarded = [];
 
@@ -50,5 +52,10 @@ class Group extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    protected static function newFactory()
+    {
+        return GroupsFactory::new();
     }
 }
