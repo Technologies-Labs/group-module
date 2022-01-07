@@ -28,14 +28,14 @@
                     <div class="uploadimage">
                         <i class="icofont-eye-alt-alt"></i>
                         <label class="fileContainer">
-                            <input wire:model.defer="image" type="file">Upload Photo
+                            <input wire:model.defer="image" type="file">تحميل الصورة
                             @error('image') <span class="error">{{ $message }}</span> @enderror
                             <div wire:loading wire:target="image" class="sp sp-circle"></div>
                         </label>
                         @error('image') <span class="error">{{ $message }}</span> @enderror
 
                     </div>
-                    <button wire:click.prevent="{{$modal['route']}}"  type="submit" class="main-btn">Save</button>
+                    <button wire:click.prevent="{{$modal['route']}}"  type="submit" class="main-btn">حفظ</button>
                 </form>
             </div>
         </div>

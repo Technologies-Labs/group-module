@@ -1,6 +1,6 @@
 <div class="tab-pane fade" id="members-{{$state}}" wire:ignore.self>
     <div class="main-wraper">
-        <h4 class="main-title">Members </h4>
+        <h4 class="main-title">الأعضاء </h4>
 
         <div class="row merged-10 remove-ext20">
 
@@ -20,7 +20,7 @@
                     @can('group-member-delete')
                     @if ($state == Modules\Group\Enum\GroupStateEnum::APPROVED)
                     <a href="javascript:void(0)" wire:click="deleteMember({{$member->pivot->id}})" title=""
-                        data-ripple=""><i class="icofont-star"></i>Delete</a>
+                        data-ripple=""><i class="icofont-star"></i>حذف</a>
                     @endif
                     @endcan
 

@@ -46,7 +46,7 @@
                                     <div class="grp-about">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <h4>Description</h4>
+                                                <h4>الوصف</h4>
                                                 <p>{{$group->group_description}}</p>
                                             </div>
                                             <div class="col-lg-12">
@@ -58,7 +58,7 @@
                                                     Share::page(url()->current())->whatsapp()->getRawLinks();
 
                                                     @endphp
-                                                    <span>share this Group</span>
+                                                    <span>مشاركة المجموعة</span>
                                                     <a href="{{$facebook}}" target="_blank" title="" class="facebook"><i
                                                             class="icofont-facebook"></i></a>
 

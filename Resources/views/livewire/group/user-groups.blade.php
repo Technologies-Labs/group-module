@@ -27,7 +27,7 @@
                     </figure>
                     <a title="" href="{{ route('group.details', ['group' => $group]) }}">{{$group->group_name}}
                         @if ($group->is_owner)
-                        (Owner)
+                        (المالك)
                         @endif
 
                     </a>

@@ -12,22 +12,22 @@
                             <line x1="12" y1="17" x2="12.01" y2="17"></line>
                         </svg></i>
 
-                    Create Group
+                    إنشاء مجموعة
                 </h5>
             </div>
             <div class="post-new">
                 <form enctype="multipart/form-data" class="c-form">
-                    <input type="text" wire:model.defer="name" required="required" placeholder="Enter Group Name">
+                    <input type="text" wire:model.defer="name" required="required" placeholder="اكتب اسم المجموعة">
                     @error('name') <span class="error">{{ $message }}</span> @enderror
 
                     <textarea wire:model.defer="description" rows="5" type="textarea" required="required"
-                        placeholder="Enter Group Description"></textarea>
+                        placeholder="اكتب وصف للمجموعة"></textarea>
                     @error('description') <span class="error">{{ $message }}</span> @enderror
 
                     <div class="uploadimage">
                         <i class="icofont-eye-alt-alt"></i>
                         <label class="fileContainer">
-                            <input wire:model.defer="image" type="file">Upload Photo
+                            <input wire:model.defer="image" type="file">تحميل صورة المجموعة
                             @error('image') <span class="error">{{ $message }}</span> @enderror
                             <div wire:loading wire:target="image" class="sp sp-circle"></div>
                         </label>
@@ -36,12 +36,12 @@
                     <div class="uploadimage">
                         <i class="icofont-eye-alt-alt"></i>
                         <label class="fileContainer">
-                            <input wire:model.defer="coverImage" type="file">Upload Cover Photo
+                            <input wire:model.defer="coverImage" type="file">تحميل صورة الغلاف
                             @error('coverImage') <span class="error">{{ $message }}</span> @enderror
                             <div wire:loading wire:target="coverImage" class="sp sp-circle"></div>
                         </label>
                     </div>
-                    <button wire:click.prevent="createGroup()"  type="submit" class="main-btn">Save</button>
+                    <button wire:click.prevent="createGroup()"  type="submit" class="main-btn">حفظ</button>
                 </form>
             </div>
         </div>
