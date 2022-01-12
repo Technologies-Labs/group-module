@@ -40,16 +40,15 @@
                             <ul>
                                 @can('post-edit')
                                 <li wire:click='editPost({{$post->id}})' class="add-post">
-                                    <i class="icofont-pen-alt-1"></i>Edit Post
-                                    <span>Edit This Post within a Hour</span>
+                                    <i class="icofont-pen-alt-1"></i>تعديل
+{{--                                    <span>Edit This Post within a Hour</span>--}}
                                 </li>
                                 @endcan
 
                                 @can('post-delete')
                                 <li wire:click='deletePost({{$post->id}})'>
-                                    <i class="icofont-ui-delete"></i>Delete Post
-                                    <span>If inappropriate Post By
-                                        Mistake</span>
+                                    <i class="icofont-ui-delete"></i>حذف
+{{--                                    <span>If inappropriate Post ByMistake</span>--}}
                                 </li>
                                 @endcan
 
